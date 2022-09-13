@@ -1,0 +1,29 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+#
+
+
+type User {
+  id: ID!,
+  name: String!,
+  createdOn: Int!,
+  updatedOn: Int!,
+  deleted: Boolean!,
+  isActive: Boolean!
+}
+
+type Query {
+  getUser(id: String!): User!
+  getUsers(updateAt: Int!,limit: Int!): [User!]! #约定updateAt字段和limit为筛选的条件
+}
+
+input NewUser {
+  id: String!
+  name: String!
+  isActive: Boolean!
+}
+
+type Mutation {
+  createUser(input: NewUser!): User!
+}
