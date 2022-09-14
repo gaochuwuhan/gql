@@ -26,4 +26,6 @@ input NewUser {
 
 type Mutation {
   createUser(input: NewUser!): User!
+  modifyUser(id: String!,name:String!,isActive: Boolean!): ID!
+
 }

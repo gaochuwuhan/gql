@@ -5,6 +5,7 @@ package resolver
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -12,6 +13,7 @@ import (
 	"github.com/gaochuwuhan/gql/graph/generated"
 	"github.com/gaochuwuhan/gql/graph/model"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // CreateTodo is the resolver for the createTodo field.
@@ -31,6 +33,22 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 		return nil, err
 	}
 	return u, nil
+}
+
+// ModifyUser is the resolver for the modifyUser field.
+func (r *mutationResolver) ModifyUser(ctx context.Context, id string, name string, isActive bool) (string, error) {
+	//panic(fmt.Errorf("not implemented: ModifyUser - modifyUser"))
+	coll := r.DB.Database(db).Collection("user")
+	filter := bson.M{"id": id} //找到要更新的数据
+	update := bson.M{"$set": bson.M{"name": name, "isActive": isActive}}
+	result, err := coll.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return "", err
+	}
+	if result.MatchedCount < 1 {
+		return "", errors.New("item not found in database")
+	}
+	return id, nil
 }
 
 // GetUser is the resolver for the getUser field.
@@ -68,5 +86,5 @@ type queryResolver struct{ *Resolver }
 //    it when you're done.
 //  - You have helper methods in this file. Move them out to keep these resolver files clean.
 const (
-	db = "test-module"
+	db = "nisar-module"
 )

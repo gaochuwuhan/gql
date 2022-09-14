@@ -12,7 +12,7 @@ import (
 )
 
 const defaultPort = "9090"
-const defaultUri = "mongodb://mongou:mongou@127.0.0.1:27017/test-module"
+const defaultUri = "mongodb://mongou:mongou@127.0.0.1:27017/nisar-module"
 
 func main() {
 	port := os.Getenv("PORT")
